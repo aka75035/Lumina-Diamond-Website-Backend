@@ -1,0 +1,115 @@
+.dashboard-container{
+
+    display:flex;
+
+    gap:20px;
+
+    padding:20px;
+
+}
+
+/* ========================= */
+/* PRODUCTS */
+/* ========================= */
+
+.products-section{
+
+    width:60%;
+
+}
+
+.products-container{
+
+    background:white;
+
+    border-radius:10px;
+
+    padding:15px;
+
+}
+
+.product-card{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+    padding:15px;
+
+    border:1px solid #ddd;
+
+    margin-top:10px;
+
+    border-radius:8px;
+
+    text-decoration:none;
+
+    color:black;
+
+}
+
+.product-card span{
+
+    flex:1;
+
+}
+
+.product-card button{
+
+    background:red;
+
+    color:white;
+
+    border:none;
+
+    padding:8px 15px;
+
+    border-radius:5px;
+
+    cursor:pointer;
+
+}
+
+/* ========================= */
+/* METAL RATES */
+/* ========================= */
+
+.metal-section{
+
+    width:40%;
+
+}
+
+.metal-container{
+
+    background:white;
+
+    border-radius:10px;
+
+    padding:15px;
+
+}
+
+.metal-card{
+
+    border:1px solid #ddd;
+
+    border-radius:8px;
+
+    padding:15px;
+
+    margin-top:10px;
+
+}
+
+.section-heading{
+
+    font-size:24px;
+
+    font-weight:bold;
+
+    margin-bottom:15px;
+
+}

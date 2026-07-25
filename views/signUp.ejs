@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UserSignUp</title>
+    <style>
+        html, body {
+            margin: 0;
+        }
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        .container{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            max-width: 500px;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .form-data{
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            width: 100%;
+        }
+        .form {
+            display: flex;
+            flex-direction: row;
+            width: 100%;
+            align-items: center;
+        }
+        .label{
+            width: 40%;
+            text-align: right;
+            padding-right: 10px;
+        }
+
+        .input {
+            width: 60%;
+            padding: 5px;
+            box-sizing: border-box;
+        }
+        .buttons{
+            margin-top: 10px;
+            margin-left: 195px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>SignUp</h1>
+        <form class="signup-form" action="/user/signup" method="POST">
+            <div class="form-data">
+                <div class="form">
+                    <label class="label">userName</label>
+                    <input class="input" type="text" name="userName" placeholder="User Name" required>
+                </div>
+                <div class="form">
+                    <label class="label">Email</label>
+                    <input class="input" type="email" name="email" placeholder="Email" required>
+                </div>
+                <div class="form">
+                    <label class="label">Password</label>
+                    <input class="input" type="password" name="password" placeholder="Password" required>
+                </div>
+                <div style="text-align:center; margin-top:10px;">
+                    <button class="signUp" type="submit">Sign Up</button>
+                </div>
+                <div style="text-align:center; margin-top:8px;">
+                    <p>Already have an account? <a href="/login">Login</a></p>
+                </div>
+            </div>
+        </form>
+    </div>
+</body>
+</body>
+</html>

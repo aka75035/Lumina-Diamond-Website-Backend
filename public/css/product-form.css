@@ -1,0 +1,39 @@
+input,
+textarea,
+select{
+    width:100%;
+    padding:12px;
+    margin-top:5px;
+    margin-bottom:20px;
+    border:1px solid #ccc;
+    border-radius:6px;
+}
+
+button{
+    padding:12px 20px;
+    border:none;
+    background:black;
+    color:white;
+    border-radius:6px;
+    cursor:pointer;
+}
+
+.remove-btn{
+    background:red;
+}
+
+.image-box,
+.video-box,
+.customization-box{
+    border:1px solid #ddd;
+    padding:15px;
+    margin-bottom:15px;
+    border-radius:8px;
+}
+
+.image-box,
+.video-box{
+    display:flex;
+    gap:10px;
+    align-items:center;
+}

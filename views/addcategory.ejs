@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Add Category</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 30px;
+      background: #f7f7f7;
+    }
+
+    .box {
+      max-width: 600px;
+      margin: auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+    }
+
+    label {
+      display: block;
+      margin-top: 15px;
+      margin-bottom: 5px;
+    }
+
+    input,
+    select {
+      width: 100%;
+      padding: 10px;
+      box-sizing: border-box;
+    }
+
+    button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      cursor: pointer;
+    }
+    input[type="checkbox"] {
+      width: auto;
+      padding: 0;
+      margin-right: 8px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="box">
+    <h1>Add Category</h1>
+
+    <form action="/category" method="POST">
+
+      <label>Name</label>
+      <input type="text" name="name" required />
+
+      <label>Slug (optional)</label>
+      <input type="text" name="slug" />
+
+      <label>Image</label>
+      <input type="text" name="image" />
+
+      <label>Parent Category</label>
+      <select name="category">
+        <option value="">Select Category</option>
+
+        <% categories.forEach(category => { %>
+          <option value="<%= category._id %>">
+            <%= category.name %>
+          </option>
+        <% }) %>
+      </select>
+      <label>Collections</label>
+
+      <% collections.forEach(collection => { %>
+          <div>
+              <input
+                  type="checkbox"
+                  name="collections"
+                  value="<%= collection._id %>"
+                  id="<%= collection._id %>"
+              >
+
+              <label for="<%= collection._id %>" style="display: inline;">
+                  <%= collection.name %>
+              </label>
+          </div>
+      <% }) %>
+
+      <button type="submit">
+        Create Category
+      </button>
+
+    </form>
+  </div>
+</body>
+</html>

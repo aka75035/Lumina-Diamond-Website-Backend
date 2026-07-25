@@ -1,0 +1,1301 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<%- include("partials/head",{ title:"Add Product" }) %>
+
+<body>
+
+<%- include("partials/navbar") %>
+
+<div class="container-fluid py-4">
+
+<div class="card shadow">
+
+<div class="card-header bg-dark text-white">
+
+<h2 class="mb-0">Add New Product</h2>
+
+</div>
+
+<div class="card-body">
+
+<form action="/product/addproduct" method="POST" id="productForm">
+
+<!-- ========================================= -->
+<!-- BASIC INFORMATION -->
+<!-- ========================================= -->
+
+<h4 class="border-bottom pb-2 mb-4">
+Basic Information
+</h4>
+
+<div class="row g-3">
+
+<div class="col-md-6">
+
+<label class="form-label">
+Product Title
+</label>
+
+<input
+class="form-control"
+type="text"
+name="title"
+required>
+
+</div>
+
+<div class="col-md-6">
+
+<label class="form-label">
+SKU
+</label>
+
+<input
+class="form-control"
+type="text"
+name="sku"
+required>
+
+</div>
+
+<div class="col-md-6">
+
+<label class="form-label">
+Product Type
+</label>
+
+<select
+class="form-select"
+name="productType"
+required>
+
+<option value="">Select Product Type</option>
+
+<option value="Ring">Ring</option>
+
+<option value="Pendant">Pendant</option>
+
+<option value="Chain">Chain</option>
+
+<option value="Bracelet">Bracelet</option>
+
+<option value="Bangle">Bangle</option>
+
+<option value="Necklace">Necklace</option>
+
+<option value="Earrings">Earrings</option>
+
+<option value="Coin">Coin</option>
+
+<option value="Loose Diamond">Loose Diamond</option>
+
+<option value="Gemstone">Gemstone</option>
+
+<option value="Other">Other</option>
+
+</select>
+
+</div>
+
+<div class="col-md-6">
+
+<label class="form-label">
+Category
+</label>
+
+<select
+class="form-select"
+name="category"
+required>
+
+<option value="">
+Select Category
+</option>
+
+<% categories.forEach(category=>{ %>
+
+<option value="<%= category._id %>">
+
+<%= category.name %>
+
+</option>
+
+<% }) %>
+
+</select>
+
+</div>
+
+<div class="col-12">
+
+<label class="form-label">
+Collections
+</label>
+
+<select
+class="form-select"
+multiple
+name="collections">
+
+<% collections.forEach(collection=>{ %>
+
+<option value="<%= collection._id %>">
+
+<%= collection.name %>
+
+</option>
+
+<% }) %>
+
+</select>
+
+<small class="text-muted">
+Hold Ctrl (Windows) or Cmd (Mac) to select multiple collections.
+</small>
+
+</div>
+
+</div>
+
+<hr class="my-5">
+
+<!-- ========================================= -->
+<!-- PRICING -->
+<!-- ========================================= -->
+
+<h4 class="border-bottom pb-2 mb-4">
+
+Pricing
+
+</h4>
+
+<div class="row g-3">
+
+    <div class="col-md-3">
+
+        <label class="form-label">
+            Pricing Mode
+        </label>
+
+        <select
+            class="form-select"
+            name="pricingMode">
+
+            <option value="dynamic">Dynamic</option>
+            <option value="manual">Manual</option>
+            <option value="fixed">Fixed</option>
+
+        </select>
+
+    </div>
+
+    <div class="col-md-3">
+
+        <label class="form-label">
+            Fixed Price
+        </label>
+
+        <input
+            class="form-control"
+            type="number"
+            step="0.01"
+            name="fixedPrice"
+            value="0">
+
+    </div>
+
+    <div class="col-md-3">
+
+        <label class="form-label">
+            MRP
+        </label>
+
+        <input
+            class="form-control"
+            type="number"
+            step="0.01"
+            name="mrp"
+            required>
+
+    </div>
+
+    <div class="col-md-3">
+
+        <label class="form-label">
+            Sale Price
+        </label>
+
+        <input
+            class="form-control"
+            type="number"
+            step="0.01"
+            name="salePrice"
+            required>
+
+    </div>
+
+    <div class="col-md-3">
+
+        <label class="form-label">
+            Stock
+        </label>
+
+        <input
+            class="form-control"
+            type="number"
+            name="stock"
+            value="0">
+
+    </div>
+
+    <div class="col-md-3">
+
+        <label class="form-label">
+            Making Charge Type
+        </label>
+
+        <select
+            class="form-select"
+            name="makingChargesType">
+
+            <option value="fixed">Fixed</option>
+            <option value="perGram">Per Gram</option>
+            <option value="percentage">Percentage</option>
+
+        </select>
+
+    </div>
+
+    <div class="col-md-3">
+
+        <label class="form-label">
+            Making Charge Value
+        </label>
+
+        <input
+            class="form-control"
+            type="number"
+            step="0.01"
+            name="makingChargesValue"
+            value="0">
+
+    </div>
+
+    <div class="col-md-3">
+
+        <div class="form-check mt-4">
+
+            <input
+                class="form-check-input"
+                type="checkbox"
+                name="dynamicMetal"
+                checked>
+
+            <label class="form-check-label">
+                Dynamic Metal
+            </label>
+
+        </div>
+
+        <div class="form-check">
+
+            <input
+                class="form-check-input"
+                type="checkbox"
+                name="dynamicStone">
+
+            <label class="form-check-label">
+                Dynamic Stone
+            </label>
+
+        </div>
+
+        <div class="form-check">
+
+            <input
+                class="form-check-input"
+                type="checkbox"
+                name="dynamicMakingCharges">
+
+            <label class="form-check-label">
+                Dynamic Making Charges
+            </label>
+
+        </div>
+
+    </div>
+
+</div>
+
+<hr class="my-5">
+
+<!-- ========================================= -->
+<!-- METAL -->
+<!-- ========================================= -->
+
+<h4 class="border-bottom pb-2 mb-4">
+
+Metal Information
+
+</h4>
+
+<div class="row g-3">
+
+<div class="col-md-3">
+
+<label class="form-label">
+
+Metal Type
+
+</label>
+
+<select
+class="form-select"
+name="metalType">
+
+<option value="">Select</option>
+
+<option value="Gold">Gold</option>
+
+<option value="Silver">Silver</option>
+
+<option value="Platinum">Platinum</option>
+
+</select>
+
+</div>
+
+<div class="col-md-3">
+
+<label class="form-label">
+
+Purity
+
+</label>
+
+<select
+class="form-select"
+name="purity">
+
+<option value="">Select</option>
+
+<option>24K</option>
+
+<option>22K</option>
+
+<option>18K</option>
+
+<option>14K</option>
+
+<option>999</option>
+
+<option>925</option>
+
+</select>
+
+</div>
+
+<div class="col-md-3">
+
+<label class="form-label">
+
+Metal Weight (gm)
+
+</label>
+
+<input
+class="form-control"
+type="number"
+step="0.001"
+name="metalWeight">
+
+</div>
+
+<div class="col-md-3">
+
+<label class="form-label">
+
+Product Weight (gm)
+
+</label>
+
+<input
+class="form-control"
+type="number"
+step="0.001"
+name="productWeight">
+
+</div>
+
+</div>
+
+<hr class="my-5">
+
+<!-- ========================================= -->
+<!-- DESCRIPTION -->
+<!-- ========================================= -->
+
+<h4 class="border-bottom pb-2 mb-4">
+
+Description
+
+</h4>
+
+<div class="mb-3">
+
+<label class="form-label">
+
+Short Description
+
+</label>
+
+<textarea
+class="form-control"
+rows="3"
+name="shortDescription"></textarea>
+
+</div>
+
+<div class="mb-4">
+
+<label class="form-label">
+
+Description
+
+</label>
+
+<textarea
+class="form-control"
+rows="6"
+name="description"></textarea>
+
+</div>
+
+<hr class="my-5">
+
+<!-- ========================================= -->
+<!-- IMAGES -->
+<!-- ========================================= -->
+
+<h4 class="border-bottom pb-2 mb-4">
+
+Images
+
+</h4>
+
+<div id="imageContainer">
+
+<div class="input-group mb-2">
+
+<input
+class="form-control"
+name="images"
+placeholder="Image URL">
+
+<button
+class="btn btn-danger"
+type="button"
+disabled>
+
+Remove
+
+</button>
+
+</div>
+
+</div>
+
+<button
+type="button"
+class="btn btn-outline-primary mb-5"
+onclick="addImageField()">
+
++ Add Image
+
+</button>
+
+<!-- ========================================= -->
+<!-- VIDEOS -->
+<!-- ========================================= -->
+
+<h4 class="border-bottom pb-2 mb-4">
+
+Videos
+
+</h4>
+
+<div id="videoContainer">
+
+<div class="input-group mb-2">
+
+<input
+class="form-control"
+name="videos"
+placeholder="Video URL">
+
+<button
+class="btn btn-danger"
+type="button"
+disabled>
+
+Remove
+
+</button>
+
+</div>
+
+</div>
+
+<button
+type="button"
+class="btn btn-outline-primary"
+onclick="addVideoField()">
+
++ Add Video
+
+</button>
+
+<hr class="my-5">
+
+<!-- PART 2 STARTS HERE -->
+
+<!-- ========================================= -->
+<!-- STONES -->
+<!-- ========================================= -->
+
+<h4 class="border-bottom pb-2 mb-4">
+Stone Details
+</h4>
+
+<div id="stoneContainer">
+
+<div class="card mb-3 stone-card">
+
+<div class="card-body">
+
+<div class="row g-3">
+
+<div class="col-md-4">
+<label class="form-label">Stone Type</label>
+<input class="form-control" name="stoneType[]" placeholder="Diamond">
+</div>
+
+<div class="col-md-4">
+<label class="form-label">Shape</label>
+<input class="form-control" name="stoneShape[]" placeholder="Round">
+</div>
+
+<div class="col-md-4">
+<label class="form-label">Quantity</label>
+<input
+class="form-control"
+type="number"
+name="stoneQuantity[]"
+value="1">
+</div>
+
+<div class="col-md-4">
+<label class="form-label">Weight (ct)</label>
+<input
+class="form-control"
+type="number"
+step="0.001"
+name="stoneWeight[]">
+</div>
+
+<div class="col-md-4">
+
+<label class="form-label">
+Price
+</label>
+
+<input
+class="form-control"
+type="number"
+step="0.01"
+name="stonePrice[]">
+
+</div>
+
+<div class="col-md-4">
+
+<label class="form-label">
+Pricing Type
+</label>
+
+<select
+class="form-select"
+name="stonePricingType[]">
+
+<option value="fixed">
+Fixed
+</option>
+
+<option value="perCarat">
+Per Carat
+</option>
+
+</select>
+
+</div>
+
+<div class="col-md-4">
+<label class="form-label">Color</label>
+<input
+class="form-control"
+name="stoneColor[]">
+</div>
+
+<div class="col-md-4">
+<label class="form-label">Clarity</label>
+<input
+class="form-control"
+name="stoneClarity[]">
+</div>
+
+<div class="col-md-4">
+<label class="form-label">Size Range</label>
+<input
+class="form-control"
+name="stoneSizeRange[]">
+</div>
+
+<div class="col-md-4 d-flex align-items-end">
+
+<button
+type="button"
+class="btn btn-danger w-100 removeStone">
+
+Remove Stone
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<button
+type="button"
+class="btn btn-outline-primary mb-5"
+onclick="addStone()">
+
++ Add Stone
+
+</button>
+
+<hr class="my-5">
+
+<!-- ========================================= -->
+<!-- SPECIFICATIONS -->
+<!-- ========================================= -->
+
+<h4 class="border-bottom pb-2 mb-4">
+
+Specifications
+
+</h4>
+
+<div id="specificationContainer">
+
+<div class="row mb-3 specification-row">
+
+<div class="col-md-5">
+
+<input
+class="form-control"
+name="specificationKey[]"
+placeholder="Ring Size">
+
+</div>
+
+<div class="col-md-5">
+
+<input
+class="form-control"
+name="specificationValue[]"
+placeholder="16">
+
+</div>
+
+<div class="col-md-2">
+
+<button
+type="button"
+class="btn btn-danger w-100 removeSpecification">
+
+Remove
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+<button
+type="button"
+class="btn btn-outline-success mb-5"
+onclick="addSpecification()">
+
++ Add Specification
+
+</button>
+
+<hr class="my-5">
+
+<!-- ========================================= -->
+<!-- SEO -->
+<!-- ========================================= -->
+
+<h4 class="border-bottom pb-2 mb-4">
+
+SEO
+
+</h4>
+
+<div class="row g-3">
+
+<div class="col-md-12">
+
+<label class="form-label">
+
+SEO Title
+
+</label>
+
+<input
+class="form-control"
+name="seoTitle">
+
+</div>
+
+<div class="col-md-12">
+
+<label class="form-label">
+
+SEO Description
+
+</label>
+
+<textarea
+rows="4"
+class="form-control"
+name="seoDescription"></textarea>
+
+</div>
+
+<div class="col-md-12">
+
+<label class="form-label">
+
+SEO Keywords
+
+</label>
+
+<input
+class="form-control"
+name="seoKeywords"
+placeholder="diamond,ring,gold,luxury">
+
+<small class="text-muted">
+
+Separate keywords using commas.
+
+</small>
+
+</div>
+
+</div>
+
+<hr class="my-5">
+
+<!-- ========================================= -->
+<!-- STATUS -->
+<!-- ========================================= -->
+
+<h4 class="border-bottom pb-2 mb-4">
+
+Status
+
+</h4>
+
+<div class="row">
+
+<div class="col-md-3">
+
+<div class="form-check">
+
+<input
+class="form-check-input"
+type="checkbox"
+name="isFeatured">
+
+<label class="form-check-label">
+
+Featured Product
+
+</label>
+
+</div>
+
+</div>
+
+<div class="col-md-3">
+
+<div class="form-check">
+
+<input
+class="form-check-input"
+type="checkbox"
+name="isActive"
+checked>
+
+<label class="form-check-label">
+
+Active
+
+</label>
+
+</div>
+
+</div>
+
+</div>
+
+<hr class="my-5">
+
+<!-- ========================================= -->
+<!-- PART 3 STARTS HERE -->
+
+<!-- ========================================= -->
+<!-- CUSTOMIZATION FIELDS -->
+<!-- ========================================= -->
+
+<h4 class="border-bottom pb-2 mb-4">
+Customization Fields
+</h4>
+
+<div id="customizationContainer"></div>
+
+<button
+type="button"
+class="btn btn-outline-primary mb-5"
+onclick="addCustomizationField()">
+
++ Add Customization Field
+
+</button>
+
+<hr class="my-5">
+
+<div class="text-end">
+
+<button
+type="submit"
+class="btn btn-success btn-lg px-5">
+
+Add Product
+
+</button>
+
+</div>
+
+</form>
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+function removeElement(button){
+
+    const element =
+        button.closest(".dynamic-item") ||
+        button.closest(".input-group") ||
+        button.closest(".card") ||
+        button.closest(".row");
+
+    if(element){
+        element.remove();
+    }
+
+}
+
+/* =======================================
+IMAGES
+======================================= */
+
+function addImageField(){
+
+const container=document.getElementById("imageContainer");
+
+const div=document.createElement("div");
+
+div.className="input-group mb-2 dynamic-item";
+
+div.innerHTML=`
+<input
+class="form-control"
+name="images"
+placeholder="Image URL">
+
+<button
+type="button"
+class="btn btn-danger"
+onclick="removeElement(this)">
+Remove
+</button>
+`;
+
+container.appendChild(div);
+
+}
+
+/* =======================================
+VIDEOS
+======================================= */
+
+function addVideoField(){
+
+const container=document.getElementById("videoContainer");
+
+const div=document.createElement("div");
+
+div.className="input-group mb-2 dynamic-item";
+
+div.innerHTML=`
+<input
+class="form-control"
+name="videos"
+placeholder="Video URL">
+
+<button
+type="button"
+class="btn btn-danger"
+onclick="removeElement(this)">
+Remove
+</button>
+`;
+
+container.appendChild(div);
+
+}
+
+/* =======================================
+STONES
+======================================= */
+
+function addStone(){
+
+const container=document.getElementById("stoneContainer");
+
+const card=document.createElement("div");
+
+card.className="card mb-3 dynamic-item";
+
+card.innerHTML=`
+
+<div class="card-body">
+
+<div class="row g-3">
+
+<div class="col-md-4">
+<label>Stone Type</label>
+<input class="form-control" name="stoneType[]">
+</div>
+
+<div class="col-md-4">
+<label>Shape</label>
+<input class="form-control" name="stoneShape[]">
+</div>
+
+<div class="col-md-4">
+<label>Quantity</label>
+<input class="form-control" type="number" value="1" name="stoneQuantity[]">
+</div>
+
+<div class="col-md-4">
+<label>Weight</label>
+<input class="form-control" step="0.001" type="number" name="stoneWeight[]">
+</div>
+
+<div class="col-md-4">
+
+<label>Price</label>
+
+<input
+class="form-control"
+step="0.01"
+type="number"
+name="stonePrice[]">
+
+</div>
+
+<div class="col-md-4">
+
+<label>Pricing Type</label>
+
+<select
+class="form-select"
+name="stonePricingType[]">
+
+<option value="fixed">
+
+Fixed
+
+</option>
+
+<option value="perCarat">
+
+Per Carat
+
+</option>
+
+</select>
+
+</div>
+
+<div class="col-md-4">
+<label>Color</label>
+<input class="form-control" name="stoneColor[]">
+</div>
+
+<div class="col-md-4">
+<label>Clarity</label>
+<input class="form-control" name="stoneClarity[]">
+</div>
+
+<div class="col-md-4">
+<label>Size Range</label>
+<input class="form-control" name="stoneSizeRange[]">
+</div>
+
+<div class="col-md-4 d-flex align-items-end">
+
+<button
+type="button"
+class="btn btn-danger w-100"
+onclick="removeElement(this)">
+
+Remove Stone
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+`;
+
+container.appendChild(card);
+
+}
+
+/* =======================================
+SPECIFICATIONS
+======================================= */
+
+function addSpecification(){
+
+const container=document.getElementById("specificationContainer");
+
+const row=document.createElement("div");
+
+row.className="row mb-3 dynamic-item";
+
+row.innerHTML=`
+
+<div class="col-md-5">
+<input
+class="form-control"
+name="specificationKey[]"
+placeholder="Key">
+</div>
+
+<div class="col-md-5">
+<input
+class="form-control"
+name="specificationValue[]"
+placeholder="Value">
+</div>
+
+<div class="col-md-2">
+
+<button
+type="button"
+class="btn btn-danger w-100"
+onclick="removeElement(this)">
+
+Remove
+
+</button>
+
+</div>
+
+`;
+
+container.appendChild(row);
+
+}
+
+/* =======================================
+CUSTOMIZATION
+======================================= */
+
+let customizationIndex = 0;
+
+function addCustomizationField(){
+
+const container = document.getElementById("customizationContainer");
+
+const card = document.createElement("div");
+
+card.className = "card mb-3 dynamic-item";
+
+card.innerHTML = `
+
+<div class="card-body">
+
+<div class="row g-3">
+
+<div class="col-md-3">
+
+<label>Name</label>
+
+<input
+class="form-control"
+name="customizationFields[${customizationIndex}][name]">
+
+</div>
+
+<div class="col-md-3">
+
+<label>Label</label>
+
+<input
+class="form-control"
+name="customizationFields[${customizationIndex}][label]">
+
+</div>
+
+<div class="col-md-3">
+
+<label>Type</label>
+
+<select
+class="form-select"
+name="customizationFields[${customizationIndex}][type]">
+
+<option value="text">Text</option>
+<option value="number">Number</option>
+<option value="select">Select</option>
+<option value="radio">Radio</option>
+<option value="checkbox">Checkbox</option>
+
+</select>
+
+</div>
+
+<div class="col-md-3">
+
+<label>Placeholder</label>
+
+<input
+class="form-control"
+name="customizationFields[${customizationIndex}][placeholder]">
+
+</div>
+
+<div class="col-md-6">
+
+<label>Options</label>
+
+<input
+class="form-control"
+name="customizationFields[${customizationIndex}][options]"
+placeholder="Red,Blue,Green">
+
+</div>
+
+<div class="col-md-3">
+
+<label>Depends On Field</label>
+
+<input
+class="form-control"
+name="customizationFields[${customizationIndex}][dependsOn][field]">
+
+</div>
+
+<div class="col-md-3">
+
+<label>Depends On Value</label>
+
+<input
+class="form-control"
+name="customizationFields[${customizationIndex}][dependsOn][value]">
+
+</div>
+
+<div class="col-md-6">
+
+<div class="form-check mt-4">
+
+<input
+class="form-check-input"
+type="checkbox"
+name="customizationFields[${customizationIndex}][required]">
+
+<label class="form-check-label">
+
+Required
+
+</label>
+
+</div>
+
+</div>
+
+<div class="col-md-6 text-end">
+
+<button
+type="button"
+class="btn btn-danger mt-4"
+onclick="removeElement(this)">
+
+Remove Field
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+`;
+
+container.appendChild(card);
+
+customizationIndex++;
+
+}
+
+
+</script>
+
+</body>
+
+</html>

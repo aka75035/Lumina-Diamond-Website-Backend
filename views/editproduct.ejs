@@ -1,0 +1,1831 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<%- include("partials/head",{ title:"Edit Product" }) %>
+
+<body>
+
+<%- include("partials/navbar") %>
+
+<div class="container-fluid py-4">
+
+<div class="card shadow">
+
+<div class="card-header bg-warning">
+
+<h2 class="mb-0">
+
+Edit Product
+
+</h2>
+
+</div>
+
+<div class="card-body">
+
+<form
+action="/product/<%= product._id %>?_method=PATCH"
+method="POST"
+id="productForm">
+
+<!-- ===================================== -->
+<!-- BASIC INFORMATION -->
+<!-- ===================================== -->
+
+<h4 class="border-bottom pb-2 mb-4">
+
+Basic Information
+
+</h4>
+
+<div class="row g-3">
+
+<div class="col-md-6">
+
+<label class="form-label">
+
+Product Title
+
+</label>
+
+<input
+class="form-control"
+name="title"
+value="<%= product.title %>"
+required>
+
+</div>
+
+<div class="col-md-6">
+
+<label class="form-label">
+
+SKU
+
+</label>
+
+<input
+class="form-control"
+name="sku"
+value="<%= product.sku %>"
+required>
+
+</div>
+
+<div class="col-md-6">
+
+<label class="form-label">
+
+Product Type
+
+</label>
+
+<select
+class="form-select"
+name="productType"
+required>
+
+<%
+const productTypes=[
+"Ring",
+"Pendant",
+"Chain",
+"Bracelet",
+"Bangle",
+"Necklace",
+"Earrings",
+"Coin",
+"Loose Diamond",
+"Gemstone",
+"Other"
+];
+
+productTypes.forEach(type=>{
+%>
+
+<option
+value="<%= type %>"
+<%= product.productType===type ? "selected":"" %>>
+
+<%= type %>
+
+</option>
+
+<% }) %>
+
+</select>
+
+</div>
+
+<div class="col-md-6">
+
+<label class="form-label">
+
+Category
+
+</label>
+
+<select
+class="form-select"
+name="category"
+required>
+
+<%
+
+categories.forEach(category=>{
+
+%>
+
+<option
+
+value="<%= category._id %>"
+
+<%= String(product.category._id||product.category)==String(category._id)
+?
+"selected"
+:
+""
+%>
+
+>
+
+<%= category.name %>
+
+</option>
+
+<%
+
+})
+
+%>
+
+</select>
+
+</div>
+
+<div class="col-12">
+
+<label class="form-label">
+
+Collections
+
+</label>
+
+<select
+
+multiple
+
+class="form-select"
+
+name="collections">
+
+<%
+
+collections.forEach(collection=>{
+
+const selected =
+(product.collections || []).some(item =>
+
+String(item._id||item)
+===
+
+String(collection._id)
+
+);
+
+%>
+
+<option
+
+value="<%= collection._id %>"
+
+<%= selected ? "selected":"" %>>
+
+<%= collection.name %>
+
+</option>
+
+<%
+
+})
+
+%>
+
+</select>
+
+</div>
+
+</div>
+
+<hr class="my-5">
+
+<!-- ===================================== -->
+<!-- PRICING -->
+<!-- ===================================== -->
+
+<h4 class="border-bottom pb-2 mb-4">
+
+Pricing
+
+</h4>
+
+<div class="row g-3">
+
+    <div class="col-md-3">
+
+        <label class="form-label">
+            Pricing Mode
+        </label>
+
+        <select
+            class="form-select"
+            name="pricingMode">
+
+            <option value="dynamic"
+                <%= product.pricing?.mode==="dynamic" ? "selected" : "" %>>
+                Dynamic
+            </option>
+
+            <option value="manual"
+                <%= product.pricing?.mode==="manual" ? "selected" : "" %>>
+                Manual
+            </option>
+
+            <option value="fixed"
+                <%= product.pricing?.mode==="fixed" ? "selected" : "" %>>
+                Fixed
+            </option>
+
+        </select>
+
+    </div>
+
+    <div class="col-md-3">
+
+        <label class="form-label">
+            Fixed Price
+        </label>
+
+        <input
+            class="form-control"
+            type="number"
+            step="0.01"
+            name="fixedPrice"
+            value="<%= product.pricing?.fixedPrice || 0 %>">
+
+    </div>
+
+    <div class="col-md-3">
+
+        <label class="form-label">
+            MRP
+        </label>
+
+        <input
+            class="form-control"
+            type="number"
+            step="0.01"
+            name="mrp"
+            value="<%= product.mrp %>">
+
+    </div>
+
+    <div class="col-md-3">
+
+        <label class="form-label">
+            Sale Price
+        </label>
+
+        <input
+            class="form-control"
+            type="number"
+            step="0.01"
+            name="salePrice"
+            value="<%= product.salePrice %>">
+
+    </div>
+
+    <div class="col-md-3">
+
+        <label class="form-label">
+            Stock
+        </label>
+
+        <input
+            class="form-control"
+            type="number"
+            name="stock"
+            value="<%= product.stock %>">
+
+    </div>
+
+    <div class="col-md-3">
+
+        <label class="form-label">
+            Making Charge Type
+        </label>
+
+        <select
+            class="form-select"
+            name="makingChargesType">
+
+            <option value="fixed"
+                <%= product.makingCharges?.type==="fixed" ? "selected" : "" %>>
+                Fixed
+            </option>
+
+            <option value="perGram"
+                <%= product.makingCharges?.type==="perGram" ? "selected" : "" %>>
+                Per Gram
+            </option>
+
+            <option value="percentage"
+                <%= product.makingCharges?.type==="percentage" ? "selected" : "" %>>
+                Percentage
+            </option>
+
+        </select>
+
+    </div>
+
+    <div class="col-md-3">
+
+        <label class="form-label">
+            Making Charge Value
+        </label>
+
+        <input
+            class="form-control"
+            type="number"
+            step="0.01"
+            name="makingChargesValue"
+            value="<%= product.makingCharges?.value || 0 %>">
+
+    </div>
+
+    <div class="col-md-3">
+
+        <div class="form-check mt-4">
+
+            <input
+                class="form-check-input"
+                type="checkbox"
+                name="dynamicMetal"
+                <%= product.pricing?.dynamicMetal ? "checked" : "" %>>
+
+            <label class="form-check-label">
+                Dynamic Metal
+            </label>
+
+        </div>
+
+        <div class="form-check">
+
+            <input
+                class="form-check-input"
+                type="checkbox"
+                name="dynamicStone"
+                <%= product.pricing?.dynamicStone ? "checked" : "" %>>
+
+            <label class="form-check-label">
+                Dynamic Stone
+            </label>
+
+        </div>
+
+        <div class="form-check">
+
+            <input
+                class="form-check-input"
+                type="checkbox"
+                name="dynamicMakingCharges"
+                <%= product.pricing?.dynamicMakingCharges ? "checked" : "" %>>
+
+            <label class="form-check-label">
+                Dynamic Making Charges
+            </label>
+
+        </div>
+
+    </div>
+
+</div>
+
+<hr class="my-5">
+
+<!-- ===================================== -->
+<!-- METAL -->
+<!-- ===================================== -->
+
+<h4 class="border-bottom pb-2 mb-4">
+
+Metal Information
+
+</h4>
+
+<div class="row g-3">
+
+<div class="col-md-3">
+
+<label>
+
+Metal Type
+
+</label>
+
+<select
+class="form-select"
+name="metalType">
+
+<%
+
+["Gold","Silver","Platinum"].forEach(type=>{
+
+%>
+
+<option
+
+value="<%= type %>"
+
+<%= product.metalType===type?"selected":"" %>>
+
+<%= type %>
+
+</option>
+
+<%
+
+})
+
+%>
+
+</select>
+
+</div>
+
+<div class="col-md-3">
+
+<label>
+
+Purity
+
+</label>
+
+<select
+class="form-select"
+name="purity">
+
+<%
+
+["24K","22K","18K","14K","999","925"].forEach(p=>{
+
+%>
+
+<option
+
+value="<%= p %>"
+
+<%= product.purity===p?"selected":"" %>>
+
+<%= p %>
+
+</option>
+
+<%
+
+})
+
+%>
+
+</select>
+
+</div>
+
+<div class="col-md-3">
+
+<label>
+
+Metal Weight
+
+</label>
+
+<input
+class="form-control"
+type="number"
+step="0.001"
+name="metalWeight"
+value="<%= product.metalWeight %>">
+
+</div>
+
+<div class="col-md-3">
+
+<label>
+
+Product Weight
+
+</label>
+
+<input
+class="form-control"
+type="number"
+step="0.001"
+name="productWeight"
+value="<%= product.productWeight %>">
+
+</div>
+
+</div>
+
+<hr class="my-5">
+
+<!-- ===================================== -->
+<!-- DESCRIPTION -->
+<!-- ===================================== -->
+
+<h4 class="border-bottom pb-2 mb-4">
+
+Description
+
+</h4>
+
+<div class="mb-3">
+
+<label>
+
+Short Description
+
+</label>
+
+<textarea
+class="form-control"
+rows="3"
+name="shortDescription"><%= product.shortDescription %></textarea>
+
+</div>
+
+<div class="mb-4">
+
+<label>
+
+Description
+
+</label>
+
+<textarea
+class="form-control"
+rows="6"
+name="description"><%= product.description %></textarea>
+
+</div>
+
+<hr class="my-5">
+
+<!-- ===================================== -->
+<!-- IMAGES -->
+<!-- ===================================== -->
+
+<h4 class="border-bottom pb-2 mb-4">
+
+Images
+
+</h4>
+
+<div id="imageContainer">
+
+<%
+(product.images || []).forEach(image=>{
+%>
+
+<div class="input-group mb-2">
+
+<input
+class="form-control"
+name="images"
+value="<%= image %>">
+
+<button
+type="button"
+class="btn btn-danger"
+onclick="removeElement(this)">
+
+Remove
+
+</button>
+
+</div>
+
+<%
+
+})
+
+%>
+
+</div>
+
+<button
+type="button"
+class="btn btn-outline-primary mb-5"
+onclick="addImageField()">
+
++ Add Image
+
+</button>
+
+<!-- ===================================== -->
+<!-- VIDEOS -->
+<!-- ===================================== -->
+
+<h4 class="border-bottom pb-2 mb-4">
+
+Videos
+
+</h4>
+
+<div id="videoContainer">
+
+<%
+(product.videos || []).forEach(video=>{
+%>
+
+<div class="input-group mb-2">
+
+<input
+class="form-control"
+name="videos"
+value="<%= video %>">
+
+<button
+type="button"
+class="btn btn-danger"
+onclick="removeElement(this)">
+
+Remove
+
+</button>
+
+</div>
+
+<%
+
+})
+
+%>
+
+</div>
+
+<button
+type="button"
+class="btn btn-outline-primary"
+onclick="addVideoField()">
+
++ Add Video
+
+</button>
+
+<hr class="my-5">
+
+<!-- PART 2 STARTS HERE -->
+
+<!-- ===================================== -->
+<!-- STONES -->
+<!-- ===================================== -->
+
+<h4 class="border-bottom pb-2 mb-4">
+Stone Details
+</h4>
+
+<div id="stoneContainer">
+
+<%
+if(product.stones && product.stones.length){
+
+product.stones.forEach((stone,index)=>{
+
+%>
+
+<div class="card mb-3 stone-card">
+
+<div class="card-body">
+
+<div class="row g-3">
+
+<div class="col-md-4">
+<label class="form-label">Stone Type</label>
+<input
+class="form-control"
+name="stoneType[]"
+value="<%= stone.type %>">
+</div>
+
+<div class="col-md-4">
+<label class="form-label">Shape</label>
+<input
+class="form-control"
+name="stoneShape[]"
+value="<%= stone.shape %>">
+</div>
+
+<div class="col-md-4">
+<label class="form-label">Quantity</label>
+<input
+class="form-control"
+type="number"
+name="stoneQuantity[]"
+value="<%= stone.quantity %>">
+</div>
+
+<div class="col-md-4">
+<label class="form-label">Weight</label>
+<input
+class="form-control"
+type="number"
+step="0.001"
+name="stoneWeight[]"
+value="<%= stone.weight %>">
+</div>
+
+<div class="col-md-4">
+
+<label class="form-label">
+Price
+</label>
+
+<input
+class="form-control"
+type="number"
+step="0.01"
+name="stonePrice[]"
+value="<%= stone.price %>">
+
+</div>
+
+<div class="col-md-4">
+
+<label class="form-label">
+Pricing Type
+</label>
+
+<select
+class="form-select"
+name="stonePricingType[]">
+
+<option
+value="fixed"
+<%= stone.pricingType==="fixed" ? "selected" : "" %>>
+
+Fixed
+
+</option>
+
+<option
+value="perCarat"
+<%= stone.pricingType==="perCarat" ? "selected" : "" %>>
+
+Per Carat
+
+</option>
+
+</select>
+
+</div>
+
+<div class="col-md-4">
+<label class="form-label">Color</label>
+<input
+class="form-control"
+name="stoneColor[]"
+value="<%= stone.color %>">
+</div>
+
+<div class="col-md-4">
+<label class="form-label">Clarity</label>
+<input
+class="form-control"
+name="stoneClarity[]"
+value="<%= stone.clarity %>">
+</div>
+
+<div class="col-md-4">
+<label class="form-label">Size Range</label>
+<input
+class="form-control"
+name="stoneSizeRange[]"
+value="<%= stone.sizeRange %>">
+</div>
+
+<div class="col-md-4 d-flex align-items-end">
+
+<button
+type="button"
+class="btn btn-danger w-100"
+onclick="removeElement(this)">
+
+Remove Stone
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<%
+
+})
+
+}else{
+
+%>
+
+<div class="card mb-3 stone-card">
+
+<div class="card-body">
+
+<div class="row g-3">
+
+<div class="col-md-4">
+<label class="form-label">Stone Type</label>
+<input
+class="form-control"
+name="stoneType[]">
+</div>
+
+<div class="col-md-4">
+<label class="form-label">Shape</label>
+<input
+class="form-control"
+name="stoneShape[]">
+</div>
+
+<div class="col-md-4">
+<label class="form-label">Quantity</label>
+<input
+class="form-control"
+type="number"
+name="stoneQuantity[]"
+value="1">
+</div>
+
+<div class="col-md-4">
+<label class="form-label">Weight</label>
+<input
+class="form-control"
+type="number"
+step="0.001"
+name="stoneWeight[]">
+</div>
+
+<div class="col-md-4">
+
+<label class="form-label">
+Price
+</label>
+
+<input
+class="form-control"
+type="number"
+step="0.01"
+name="stonePrice[]">
+
+</div>
+
+<div class="col-md-4">
+
+<label class="form-label">
+Pricing Type
+</label>
+
+<select
+class="form-select"
+name="stonePricingType[]">
+
+<option value="fixed">
+
+Fixed
+
+</option>
+
+<option value="perCarat">
+
+Per Carat
+
+</option>
+
+</select>
+
+</div>
+
+<div class="col-md-4">
+<label class="form-label">Color</label>
+<input
+class="form-control"
+name="stoneColor[]">
+</div>
+
+<div class="col-md-4">
+<label class="form-label">Clarity</label>
+<input
+class="form-control"
+name="stoneClarity[]">
+</div>
+
+<div class="col-md-4">
+<label class="form-label">Size Range</label>
+<input
+class="form-control"
+name="stoneSizeRange[]">
+</div>
+
+<div class="col-md-4 d-flex align-items-end">
+
+<button
+type="button"
+class="btn btn-danger w-100"
+onclick="removeElement(this)">
+
+Remove Stone
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<% } %>
+
+</div>
+
+<button
+type="button"
+class="btn btn-outline-primary mb-5"
+onclick="addStone()">
+
++ Add Stone
+
+</button>
+
+<hr class="my-5">
+
+<!-- ===================================== -->
+<!-- SPECIFICATIONS -->
+<!-- ===================================== -->
+
+<h4 class="border-bottom pb-2 mb-4">
+
+Specifications
+
+</h4>
+
+<div id="specificationContainer">
+
+<%
+
+if(product.specifications){
+
+Object.entries(product.specifications).forEach(([key,value])=>{
+
+%>
+
+<div class="row mb-3 specification-row">
+
+<div class="col-md-5">
+
+<input
+class="form-control"
+name="specificationKey[]"
+value="<%= key %>"
+placeholder="Key">
+
+</div>
+
+<div class="col-md-5">
+
+<input
+class="form-control"
+name="specificationValue[]"
+value="<%= value %>"
+placeholder="Value">
+
+</div>
+
+<div class="col-md-2">
+
+<button
+type="button"
+class="btn btn-danger w-100"
+onclick="removeElement(this)">
+
+Remove
+
+</button>
+
+</div>
+
+</div>
+
+<%
+
+})
+
+}else{
+
+%>
+
+<div class="row mb-3 specification-row">
+
+<div class="col-md-5">
+
+<input
+class="form-control"
+name="specificationKey[]"
+placeholder="Key">
+
+</div>
+
+<div class="col-md-5">
+
+<input
+class="form-control"
+name="specificationValue[]"
+placeholder="Value">
+
+</div>
+
+<div class="col-md-2">
+
+<button
+type="button"
+class="btn btn-danger w-100"
+onclick="removeElement(this)">
+
+Remove
+
+</button>
+
+</div>
+
+</div>
+
+<% } %>
+
+</div>
+
+<button
+type="button"
+class="btn btn-outline-success mb-5"
+onclick="addSpecification()">
+
++ Add Specification
+
+</button>
+
+<hr class="my-5">
+
+<!-- PART 2B STARTS HERE -->
+
+<!-- ===================================== -->
+<!-- SEO -->
+<!-- ===================================== -->
+
+<h4 class="border-bottom pb-2 mb-4">
+
+SEO
+
+</h4>
+
+<div class="row g-3">
+
+<div class="col-md-12">
+
+<label class="form-label">
+
+SEO Title
+
+</label>
+
+<input
+class="form-control"
+name="seoTitle"
+value="<%= product.seoTitle || '' %>">
+
+</div>
+
+<div class="col-md-12">
+
+<label class="form-label">
+
+SEO Description
+
+</label>
+
+<textarea
+rows="4"
+class="form-control"
+name="seoDescription"><%= product.seoDescription || '' %></textarea>
+
+</div>
+
+<div class="col-md-12">
+
+<label class="form-label">
+
+SEO Keywords
+
+</label>
+
+<input
+class="form-control"
+name="seoKeywords"
+value="<%= product.seoKeywords ? product.seoKeywords.join(', ') : '' %>"
+placeholder="diamond, ring, gold">
+
+<small class="text-muted">
+
+Separate keywords using commas.
+
+</small>
+
+</div>
+
+</div>
+
+<hr class="my-5">
+
+<!-- ===================================== -->
+<!-- STATUS -->
+<!-- ===================================== -->
+
+<h4 class="border-bottom pb-2 mb-4">
+
+Status
+
+</h4>
+
+<div class="row">
+
+<div class="col-md-3">
+
+<div class="form-check">
+
+<input
+class="form-check-input"
+type="checkbox"
+name="isFeatured"
+<%= product.isFeatured ? "checked" : "" %>>
+
+<label class="form-check-label">
+
+Featured Product
+
+</label>
+
+</div>
+
+</div>
+
+<div class="col-md-3">
+
+<div class="form-check">
+
+<input
+class="form-check-input"
+type="checkbox"
+name="isActive"
+<%= product.isActive ? "checked" : "" %>>
+
+<label class="form-check-label">
+
+Active
+
+</label>
+
+</div>
+
+</div>
+
+</div>
+
+<hr class="my-5">
+
+<!-- ===================================== -->
+<!-- CUSTOMIZATION FIELDS -->
+<!-- ===================================== -->
+
+<h4 class="border-bottom pb-2 mb-4">
+
+Customization Fields
+
+</h4>
+
+<div id="customizationContainer">
+
+<%
+
+if(product.customizationFields &&
+product.customizationFields.length){
+
+product.customizationFields.forEach((field,index)=>{
+
+%>
+
+<div class="card mb-3 dynamic-item">
+
+<div class="card-body">
+
+<div class="row g-3">
+
+<div class="col-md-3">
+
+<label>Name</label>
+
+<input
+class="form-control"
+name="customizationFields[<%= index %>][name]"
+value="<%= field.name %>">
+
+</div>
+
+<div class="col-md-3">
+
+<label>Label</label>
+
+<input
+class="form-control"
+name="customizationFields[<%= index %>][label]"
+value="<%= field.label %>">
+
+</div>
+
+<div class="col-md-3">
+
+<label>Type</label>
+
+<select
+class="form-select"
+name="customizationFields[<%= index %>][type]">
+
+<option
+value="text"
+<%= field.type==="text"?"selected":"" %>>
+
+Text
+
+</option>
+
+<option
+value="number"
+<%= field.type==="number"?"selected":"" %>>
+
+Number
+
+</option>
+
+<option
+value="select"
+<%= field.type==="select"?"selected":"" %>>
+
+Select
+
+</option>
+
+<option
+value="radio"
+<%= field.type==="radio"?"selected":"" %>>
+
+Radio
+
+</option>
+
+<option
+value="checkbox"
+<%= field.type==="checkbox"?"selected":"" %>>
+
+Checkbox
+
+</option>
+
+</select>
+
+</div>
+
+<div class="col-md-3">
+
+<label>Placeholder</label>
+
+<input
+class="form-control"
+name="customizationFields[<%= index %>][placeholder]"
+value="<%= field.placeholder || '' %>">
+
+</div>
+
+<div class="col-md-6">
+
+<label>Options</label>
+
+<input
+class="form-control"
+name="customizationFields[<%= index %>][options]"
+value="<%= field.options ? field.options.join(', ') : '' %>">
+
+</div>
+
+<div class="col-md-3">
+
+<label>Depends On Field</label>
+
+<input
+class="form-control"
+name="customizationFields[<%= index %>][dependsOn][field]"
+value="<%= field.dependsOn?.field || '' %>">
+
+</div>
+
+<div class="col-md-3">
+
+<label>Depends On Value</label>
+
+<input
+class="form-control"
+name="customizationFields[<%= index %>][dependsOn][value]"
+value="<%= field.dependsOn?.value || '' %>">
+
+</div>
+
+<div class="col-md-6">
+
+<div class="form-check mt-4">
+
+<input
+class="form-check-input"
+type="checkbox"
+name="customizationFields[<%= index %>][required]"
+<%= field.required ? "checked" : "" %>>
+
+<label class="form-check-label">
+
+Required
+
+</label>
+
+</div>
+
+</div>
+
+<div class="col-md-6 text-end">
+
+<button
+type="button"
+class="btn btn-danger mt-4"
+onclick="removeElement(this)">
+
+Remove Field
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<%
+
+})
+
+}
+
+%>
+
+</div>
+
+<button
+type="button"
+class="btn btn-outline-primary mb-5"
+onclick="addCustomizationField()">
+
++ Add Customization Field
+
+</button>
+
+<hr class="my-5">
+
+<!-- PART 3 STARTS HERE -->
+
+<!-- ===================================== -->
+<!-- SUBMIT -->
+<!-- ===================================== -->
+
+<div class="d-flex justify-content-end gap-2 mb-4">
+
+<a
+href="/product"
+class="btn btn-secondary">
+
+Cancel
+
+</a>
+
+<button
+type="submit"
+class="btn btn-warning">
+
+Update Product
+
+</button>
+
+</div>
+
+</form>
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+function removeElement(button){
+    button.closest(".input-group,.card,.specification-row,.dynamic-item")?.remove();
+}
+
+// =====================================
+// Images
+// =====================================
+
+function addImageField(){
+
+const container=document.getElementById("imageContainer");
+
+container.insertAdjacentHTML("beforeend",`
+
+<div class="input-group mb-2">
+
+<input
+class="form-control"
+name="images"
+placeholder="Image URL">
+
+<button
+type="button"
+class="btn btn-danger"
+onclick="removeElement(this)">
+
+Remove
+
+</button>
+
+</div>
+
+`);
+
+}
+
+// =====================================
+// Videos
+// =====================================
+
+function addVideoField(){
+
+const container=document.getElementById("videoContainer");
+
+container.insertAdjacentHTML("beforeend",`
+
+<div class="input-group mb-2">
+
+<input
+class="form-control"
+name="videos"
+placeholder="Video URL">
+
+<button
+type="button"
+class="btn btn-danger"
+onclick="removeElement(this)">
+
+Remove
+
+</button>
+
+</div>
+
+`);
+
+}
+
+// =====================================
+// Stones
+// =====================================
+
+function addStone(){
+
+const container=document.getElementById("stoneContainer");
+
+container.insertAdjacentHTML("beforeend",`
+
+<div class="card mb-3 stone-card">
+
+<div class="card-body">
+
+<div class="row g-3">
+
+<div class="col-md-4">
+<label>Stone Type</label>
+<input class="form-control" name="stoneType[]">
+</div>
+
+<div class="col-md-4">
+<label>Shape</label>
+<input class="form-control" name="stoneShape[]">
+</div>
+
+<div class="col-md-4">
+<label>Quantity</label>
+<input class="form-control" type="number" name="stoneQuantity[]" value="1">
+</div>
+
+<div class="col-md-4">
+<label>Weight</label>
+<input class="form-control" type="number" step="0.001" name="stoneWeight[]">
+</div>
+
+<div class="col-md-4">
+
+<label>Price</label>
+
+<input
+class="form-control"
+type="number"
+step="0.01"
+name="stonePrice[]">
+
+</div>
+
+<div class="col-md-4">
+
+<label>Pricing Type</label>
+
+<select
+class="form-select"
+name="stonePricingType[]">
+
+<option value="fixed">
+
+Fixed
+
+</option>
+
+<option value="perCarat">
+
+Per Carat
+
+</option>
+
+</select>
+
+</div>
+
+<div class="col-md-4">
+<label>Color</label>
+<input class="form-control" name="stoneColor[]">
+</div>
+
+<div class="col-md-4">
+<label>Clarity</label>
+<input class="form-control" name="stoneClarity[]">
+</div>
+
+<div class="col-md-4">
+<label>Size Range</label>
+<input class="form-control" name="stoneSizeRange[]">
+</div>
+
+<div class="col-md-4 d-flex align-items-end">
+
+<button
+type="button"
+class="btn btn-danger w-100"
+onclick="removeElement(this)">
+
+Remove Stone
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+`);
+
+}
+
+// =====================================
+// Specifications
+// =====================================
+
+function addSpecification(){
+
+const container=document.getElementById("specificationContainer");
+
+container.insertAdjacentHTML("beforeend",`
+
+<div class="row mb-3 specification-row">
+
+<div class="col-md-5">
+
+<input
+class="form-control"
+name="specificationKey[]"
+placeholder="Key">
+
+</div>
+
+<div class="col-md-5">
+
+<input
+class="form-control"
+name="specificationValue[]"
+placeholder="Value">
+
+</div>
+
+<div class="col-md-2">
+
+<button
+type="button"
+class="btn btn-danger w-100"
+onclick="removeElement(this)">
+
+Remove
+
+</button>
+
+</div>
+
+</div>
+
+`);
+
+}
+
+let customizationIndex=<%= product.customizationFields ? product.customizationFields.length : 0 %>;
+
+// =====================================
+// Customization Fields
+// =====================================
+
+function addCustomizationField(){
+
+const container=document.getElementById("customizationContainer");
+
+container.insertAdjacentHTML("beforeend",`
+
+<div class="card mb-3 dynamic-item">
+
+<div class="card-body">
+
+<div class="row g-3">
+
+<div class="col-md-3">
+
+<label>Name</label>
+
+<input
+class="form-control"
+name="customizationFields[${customizationIndex}][name]">
+
+</div>
+
+<div class="col-md-3">
+
+<label>Label</label>
+
+<input
+class="form-control"
+name="customizationFields[${customizationIndex}][label]">
+
+</div>
+
+<div class="col-md-3">
+
+<label>Type</label>
+
+<select
+class="form-select"
+name="customizationFields[${customizationIndex}][type]">
+
+<option value="text">Text</option>
+<option value="number">Number</option>
+<option value="select">Select</option>
+<option value="radio">Radio</option>
+<option value="checkbox">Checkbox</option>
+
+</select>
+
+</div>
+
+<div class="col-md-3">
+
+<label>Placeholder</label>
+
+<input
+class="form-control"
+name="customizationFields[${customizationIndex}][placeholder]">
+
+</div>
+
+<div class="col-md-6">
+
+<label>Options</label>
+
+<input
+class="form-control"
+name="customizationFields[${customizationIndex}][options]"
+placeholder="Red,Blue,Green">
+
+</div>
+
+<div class="col-md-3">
+
+<label>Depends On Field</label>
+
+<input
+class="form-control"
+name="customizationFields[${customizationIndex}][dependsOn][field]">
+
+</div>
+
+<div class="col-md-3">
+
+<label>Depends On Value</label>
+
+<input
+class="form-control"
+name="customizationFields[${customizationIndex}][dependsOn][value]">
+
+</div>
+
+<div class="col-md-6">
+
+<div class="form-check mt-4">
+
+<input
+class="form-check-input"
+type="checkbox"
+name="customizationFields[${customizationIndex}][required]">
+
+<label class="form-check-label">
+
+Required
+
+</label>
+
+</div>
+
+</div>
+
+<div class="col-md-6 text-end">
+
+<button
+type="button"
+class="btn btn-danger mt-4"
+onclick="removeElement(this)">
+
+Remove Field
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+`);
+
+customizationIndex++;
+
+}
+
+</script>
+
+</body>
+
+</html>
