@@ -49,37 +49,44 @@ async function handleLogin(req, res){
 
 async function handleDetailChange(req, res) {
     try {
-        const {
-            email,
-            firstName,
-            lastName,
-            mobile,
-            address,
-            company,
-            country,
-            city,
-            state,
-            pinCode,
-        } = req.body;
+        const updateData = {};
+
+        // Root profile fields
+        const fields = [
+            "firstName",
+            "lastName",
+            "mobile",
+            "address",
+            "company",
+            "country",
+            "city",
+            "state",
+            "pinCode",
+        ];
+
+        fields.forEach((field) => {
+            if (req.body[field] !== undefined) {
+                updateData[field] = req.body[field];
+            }
+        });
+
+        // Billing Address
+        if (req.body.billingAddress) {
+            if (Array.isArray(req.body.billingAddress)) {
+                updateData.billingAddress = req.body.billingAddress;
+            } else {
+                updateData.billingAddress = [req.body.billingAddress];
+            }
+        }
 
         const updatedUser = await Users.findByIdAndUpdate(
             req.user._id,
+            { $set: updateData },
             {
-                firstName,
-                lastName,
-                mobile,
-                address,
-                company,
-                country,
-                city,
-                state,
-                pinCode,
-            },
-            {
-                new: true,
+                returnDocument: "after",
                 runValidators: true,
             }
-        );
+        ).select("-password -salt");
 
         if (!updatedUser) {
             return res.status(404).json({
@@ -93,7 +100,6 @@ async function handleDetailChange(req, res) {
             message: "Profile updated successfully",
             user: updatedUser,
         });
-
     } catch (err) {
         console.error(err);
 

@@ -5,7 +5,7 @@ const {
     handleDeleteProduct,
     handleProduct,
     handleProductUpdation,
-    handleGetAllProducts,
+    handleGetProduct,
     handleFilterByCategory
 } = require("../controllers/product.controller");
 
@@ -26,23 +26,21 @@ const router = Router();
 
 router.post(
     "/addproduct",
-    restrictToLoggedinUserOnly,
     restrictToAdminOnly,
     handleAddProduct
 );
+router.get("/details/:id", handleGetProduct);
 
-router.get("/:id", handleProduct);
+router.get("/:id",restrictToAdminOnly, handleProduct);
 
 router.patch(
     "/:id",
-    restrictToLoggedinUserOnly,
     restrictToAdminOnly,
     handleProductUpdation
 );
 
 router.delete(
     "/:id",
-    restrictToLoggedinUserOnly,
     restrictToAdminOnly,
     handleDeleteProduct
 );
@@ -206,6 +204,8 @@ router.get("/", async (req, res) => {
         ========================== */
 
         let query = Product.find(filter)
+            .slice("images", 1)
+            .select("_id title metalType purity pricing metalWeight stones.price stones.Weight makingCharges salePrice mrp")
 
             .populate("category", "name slug")
 

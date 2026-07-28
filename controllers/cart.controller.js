@@ -17,7 +17,7 @@ async function handleGetCart(req, res) {
 
     const data = await Cart.find({
       user_id: String(id),
-    }).lean().sort({ createdAt: -1 });
+    }).select("product_id sku image quantity salePrice gst customizations title").lean().sort({ createdAt: -1 });
 
     return res.status(200).json(data);
   } catch (error) {

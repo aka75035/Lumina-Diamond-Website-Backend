@@ -2,7 +2,7 @@ const Collection = require('../models/collection');
 
 async function listCollections(req, res) {
   try {
-    const collections = await Collection.find().lean();
+    const collections = await Collection.find().select("slug name image").lean();
     return res.json(collections);
   } catch (error) {
     console.error(error);

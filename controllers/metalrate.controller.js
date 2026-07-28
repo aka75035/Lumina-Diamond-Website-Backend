@@ -41,7 +41,7 @@ async function handleMetalDetailAddition(
 
 async function handleGetMetal(req, res) {
     try{
-        const allMetalsData = await SimplePrice.find();
+        const allMetalsData = await SimplePrice.find().select("metalType purity amount currency").lean();
         return res.json(allMetalsData);
     }catch(error){
         console.log(error)

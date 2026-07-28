@@ -46,22 +46,15 @@ function checkForAuthenticationCookie(cookieName) {
 // ==============================
 // LOGGED-IN USER ONLY
 // ==============================
-
-function restrictToLoggedinUserOnly(
-    req,
-    res,
-    next
-) {
-    
-
+function restrictToLoggedinUserOnly(req, res, next) {
     if (!req.user) {
-
-        return res.redirect("/login");
-
+        return res.status(401).json({
+            success: false,
+            message: "Please Login"
+        });
     }
 
     next();
-
 }
 
 

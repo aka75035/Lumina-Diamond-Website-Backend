@@ -15,10 +15,27 @@ router.get('/addcategory', restrictToLoggedinUserOnly, restrictToAdminOnly, hand
 router.get('/addcollection', restrictToLoggedinUserOnly, restrictToAdminOnly, handleAddCollectionPage);
 
 
-router.get('/profile', restrictToLoggedinUserOnly, async (req, res)=>{
-    console.log("PROFILE ROUTE HIT");
-    const _id = req.user._id;
-    return res.json(req.user);
+router.get("/profile", restrictToLoggedinUserOnly, async (req, res) => {
+  try {
+      const user = await Users.findById(req.user._id).select("-password");
+      
+      if (!user) {
+          return res.status(404).json({
+              success: false,
+              message: "User not found",
+            });
+    }
+
+    return res.status(200).json({
+        success: true,
+        user,
+    });
+} catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: err.message,
+    });
+  }
 });
 
 router.get('/', restrictToLoggedinUserOnly, restrictToAdminOnly, async (req, res)=>{

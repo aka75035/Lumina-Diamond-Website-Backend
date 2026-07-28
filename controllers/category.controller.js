@@ -2,7 +2,7 @@ const Category = require('../models/category');
 
 async function listCategories(req, res) {
   try {
-    const categories = await Category.find().lean();
+    const categories = await Category.find().select(" name slug image parentCategory collections ").lean();
     return res.json(categories);
   } catch (error) {
     console.error(error);
